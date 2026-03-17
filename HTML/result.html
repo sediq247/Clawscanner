@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClawScanner | Token Safety Report</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="navbar">
+  <div class="logo">
+    <img src="/assets/logo.png.png" alt="ClawScanner Logo">
+    <span>ClawScanner</span>
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="scan.html">Scan Token</a>
+    <a href="cryptonews.html">Crypto News</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<!-- RESULT SECTION -->
+<section class="result-section">
+  <div class="container">
+    <h1>Token Safety Report</h1>
+    
+    <!-- Token Info -->
+    <div class="token-info">
+      <img id="tokenLogo" src="assets/icons/scanner.png" alt="Token Logo">
+      <h2 id="tokenName">--</h2>
+      <p id="tokenSymbol">Symbol: --</p>
+    </div>
+
+        <!-- Live Market Data -->
+        <div class="live-data">
+          <h3>Market Info</h3>
+          <p>Price: <span id="tokenPrice">--</span></p>
+          <p>Market Cap: <span id="tokenMarketCap">--</span></p>
+          <p>Total Supply: <span id="tokenSupply">--</span></p>
+          <p>24h Change: <span id="tokenChange">--</span></p>
+        </div>
+    
+    <!-- Risk Score & Safety Rating -->
+    <div class="risk-analysis">
+      <h3>Risk Score: <span id="riskScore">--</span>/100</h3>
+      <div class="risk-bar">
+        <div id="riskLevel" class="risk-level"></div>
+      </div>
+      <h3>Safety Rating: <span id="safetyRating">--</span></h3>
+    </div>
+    
+    <!-- Warnings -->
+    <div class="warnings">
+      <h3>Warnings / Alerts</h3>
+      <ul id="warningList">
+        <!-- Populated by JS -->
+      </ul>
+    </div>
+    
+    <!-- AI Advice -->
+    <div class="ai-advice">
+      <h3>AI Advice</h3>
+      <p id="aiAdvice">--</p>
+    </div>
+    
+    <a href="scan.html" class="btn-primary">Scan Another Token</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container footer-grid">
+    <div class="footer-about">
+      <h3>ClawScanner</h3>
+      <p>AI-powered token analysis to help you invest safely in crypto markets.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Navigation</h4>
+      <a href="index.html">Home</a>
+      <a href="scan.html">Scan Token</a>
+      <a href="cryptonews.html">Crypto News</a>
+      <a href="about.html">About</a>
+    </div>
+    <div class="footer-mission">
+      <h4>Our Mission</h4>
+      <p>Provide accurate AI analysis and risk detection for crypto investors worldwide.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 ClawScanner. All rights reserved.</p>
+  </div>
+</footer>
+<script type="module" src="/js/result.js"></script>
+</body>
+</html>

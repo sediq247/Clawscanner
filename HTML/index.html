@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClawScanner | Crypto Security & Market Scanner</title>
+<link rel="stylesheet" href="/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+
+<!-- HEADER / NAVIGATION -->
+<header class="navbar">
+  <div class="logo">
+    <img src="/assets/logo.png.png" alt="ClawScanner Logo">
+    <span>ClawScanner</span>
+  </div>
+  <nav>
+    <a href="index.html" class="active">Home</a>
+    <a href="scan.html">Scan Token</a>
+    <a href="cryptonews.html">Crypto News</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<!-- QUICK SCAN SECTION -->
+<section class="quick-scan">
+  <div class="container">
+    <div class="scan-box">
+      <input type="text" id="tokenAddress" placeholder="Enter Token Contract Address">
+      <button id="quickScanBtn" onclick="location.href='scan.html'">scan</button>
+    </div>
+    <p>Scan any token instantly before you trade. Protect your funds from scams and rug pulls.</p>
+  </div>
+</section>
+
+<!-- LIVE CRYPTO MARKETS / TOP TRENDING COINS -->
+<section class="markets">
+
+  <h2 class="section-title">🔥 Crypto Markets</h2>
+  
+  <div class="market-container">
+  
+  <div class="market-box">
+  <h3>🔥 Trending Coins</h3>
+  <div id="trendingCoins" class="coin-grid"></div>
+  </div>
+  
+  <div class="market-box">
+  <h3>🚀 Top Gainers</h3>
+  <div id="topGainers" class="coin-grid"></div>
+  </div>
+  
+  <div class="market-box">
+  <h3>📉 Top Losers</h3>
+  <div id="topLosers" class="coin-grid"></div>
+  </div>
+  
+  <div class="market-box">
+  <h3>💰 Top Traded Coins</h3>
+  <div id="topCoins" class="coin-grid"></div>
+  </div>
+  
+  </div>
+  
+ 
+<!-- CALL TO ACTION -->
+<section class="cta">
+  <div class="container">
+    <h2>Protect Your Crypto Investments</h2>
+    <p>Run a full AI-powered token scan before buying any crypto asset. Avoid scams, honeypots, and rug pulls.</p>
+    <a href="scan.html" class="btn-primary">Run AI Scan</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+
+    <div class="footer-mission">
+      <h4>Our Mission</h4>
+      <p>We improve transparency in crypto markets by providing powerful tools that detect malicious tokens before they harm investors.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 ClawScanner. All rights reserved.</p>
+  </div>
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
