@@ -3,96 +3,88 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClawScanner | Token Safety Report</title>
+<title>ClawScanner | Scan Result</title>
 <link rel="stylesheet" href="/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="navbar">
-  <div class="logo">
-    <img src="/assets/logo.png.png" alt="ClawScanner Logo">
-    <span>ClawScanner</span>
-  </div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="scan.html">Scan Token</a>
-    <a href="cryptonews.html">Crypto News</a>
-    <a href="about.html">About</a>
-  </nav>
+    <div class="logo">
+        <img src="/assets/" alt="ClawScanner Logo" class="logo-img">
+        <span class="logo-text">ClawScanner</span>
+    </div>
 </header>
 
-<!-- RESULT SECTION -->
-<section class="result-section">
-  <div class="container">
-    <h1>Token Safety Report</h1>
-    
-    <!-- Token Info -->
-    <div class="token-info">
-      <img id="tokenLogo" src="assets/icons/scanner.png" alt="Token Logo">
-      <h2 id="tokenName">--</h2>
-      <p id="tokenSymbol">Symbol: --</p>
-    </div>
+<!-- SCAN RESULT SECTION -->
+<section class="scan-result">
+    <div class="container">
+        <h2 class="section-title">📊 Scan Result</h2>
 
-        <!-- Live Market Data -->
-        <div class="live-data">
-          <h3>Market Info</h3>
-          <p>Price: <span id="tokenPrice">--</span></p>
-          <p>Market Cap: <span id="tokenMarketCap">--</span></p>
-          <p>Total Supply: <span id="tokenSupply">--</span></p>
-          <p>24h Change: <span id="tokenChange">--</span></p>
+        <!-- Token Summary -->
+        <div class="token-summary">
+            <img id="tokenLogo" src="/images/default-token.png" alt="Token Logo" class="token-logo">
+            <div class="token-info">
+                <h3 id="tokenName">Token Name</h3>
+                <p id="tokenSymbol">Symbol</p>
+                <p id="tokenChain">Chain</p>
+                <p id="tokenDEX">DEX</p>
+            </div>
         </div>
-    
-    <!-- Risk Score & Safety Rating -->
-    <div class="risk-analysis">
-      <h3>Risk Score: <span id="riskScore">--</span>/100</h3>
-      <div class="risk-bar">
-        <div id="riskLevel" class="risk-level"></div>
-      </div>
-      <h3>Safety Rating: <span id="safetyRating">--</span></h3>
+
+        <!-- Market Metrics -->
+        <div class="market-metrics">
+            <h3>Market Data</h3>
+            <ul>
+                <li>Price: $<span id="tokenPrice">--</span></li>
+                <li>Liquidity: $<span id="tokenLiquidity">--</span></li>
+                <li>Market Cap: $<span id="tokenMarketCap">--</span></li>
+                <li>24h Volume: $<span id="tokenVolume">--</span></li>
+            </ul>
+        </div>
+
+        <!-- Vulnerabilities / Checks -->
+        <div class="vulnerabilities">
+            <h3>Vulnerabilities & Checks</h3>
+            <ul id="tokenChecks">
+                <!-- Populated by result.js -->
+            </ul>
+
+            <!-- Risk Score & Rating UNDER vulnerabilities -->
+            <div class="risk-analysis">
+                <h3>Risk Score: <span id="riskScore">--</span>/100</h3>
+                <p>Rating: <span id="riskRating">--</span></p>
+                <p>Advice: <span id="riskAdvice">--</span></p>
+            </div>
+        </div>
+
+        <!-- Back / Scan Another -->
+        <div class="actions">
+            <button class="btn" onclick="window.location.href='scan.html'">Scan Another Token</button>
+            <button class="btn" onclick="window.location.href='index.html'">Back Home</button>
+        </div>
+
     </div>
-    
-    <!-- Warnings -->
-    <div class="warnings">
-      <h3>Warnings / Alerts</h3>
-      <ul id="warningList">
-        <!-- Populated by JS -->
-      </ul>
-    </div>
-    
-    <!-- AI Advice -->
-    <div class="ai-advice">
-      <h3>AI Advice</h3>
-      <p id="aiAdvice">--</p>
-    </div>
-    
-    <a href="scan.html" class="btn-primary">Scan Another Token</a>
-  </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="container footer-grid">
-    <div class="footer-about">
-      <h3>ClawScanner</h3>
-      <p>AI-powered token analysis to help you invest safely in crypto markets.</p>
+<!-- RECENT SCANS -->
+<section class="recent-scans">
+    <h2 class="section-title">🕒 Recent Scans</h2>
+    <div id="scanHistory" class="history-list">
+        <!-- Populated by result.js -->
     </div>
-    <div class="footer-links">
-      <h4>Navigation</h4>
-      <a href="index.html">Home</a>
-      <a href="scan.html">Scan Token</a>
-      <a href="cryptonews.html">Crypto News</a>
-      <a href="about.html">About</a>
-    </div>
-    <div class="footer-mission">
-      <h4>Our Mission</h4>
-      <p>Provide accurate AI analysis and risk detection for crypto investors worldwide.</p>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 ClawScanner. All rights reserved.</p>
-  </div>
-</footer>
+</section>
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+    <a href="index.html">Home</a>
+    <a href="scan.html">Scan Token</a>
+    <a href="news.html">Crypto News</a>
+</nav>
+
+<!-- EXTERNAL JS FILES -->
 <script type="module" src="/js/result.js"></script>
+
 </body>
 </html>

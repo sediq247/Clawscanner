@@ -1,114 +1,111 @@
-// js/app.js
+// ===============================
+// app.js - ClawScanner Home Page
+// Fully upgraded with auto-refresh
+// ===============================
 
 document.addEventListener("DOMContentLoaded", () => {
-    setupNavigation();
+    // Initial load
     loadTrendingCoins();
-    loadMarketData();
-    revealOnScroll();
+    loadTopMarketData();
+
+    // Auto-refresh every 60 seconds
+    setInterval(() => {
+        loadTrendingCoins();
+        loadTopMarketData();
+    }, 60000); // 60000ms = 1 minute
 });
 
-/* -------------------------
-   NAVIGATION CONTROL
-------------------------- */
-function setupNavigation() {
-    const links = document.querySelectorAll("nav a");
-    const currentPage = window.location.pathname.split("/").pop();
-    links.forEach(link => {
-        if (link.getAttribute("href") === currentPage) {
-            link.classList.add("active");
-        }
-    });
+// -------------------
+// HELPER: Format Number
+// -------------------
+function formatNumber(num) {
+    return Number(num).toLocaleString(undefined, { maximumFractionDigits: 2 });
 }
 
-/* -------------------------
-   TRENDING COINS
-------------------------- */
+// -------------------
+// TRENDING COINS
+// -------------------
 async function loadTrendingCoins() {
     const container = document.getElementById("trendingCoins");
     if (!container) return;
+    container.innerHTML = "<p>Loading trending coins...</p>";
 
     try {
         const res = await fetch("https://api.coingecko.com/api/v3/search/trending");
         const data = await res.json();
-        container.innerHTML = "";
+
+        container.innerHTML = ""; // Clear old data
+
         data.coins.forEach(c => {
             const coin = c.item;
             container.innerHTML += `
                 <div class="coin-card">
-                    <img src="${coin.large}" alt="${coin.name} logo">
+                    <img src="${coin.large}" alt="${coin.name} Logo">
                     <h4>${coin.name}</h4>
                     <p>${coin.symbol}</p>
-                    <p>#${coin.market_cap_rank}</p>
+                    <p>Rank #${coin.market_cap_rank}</p>
                 </div>
             `;
         });
-    } catch (err) {
-        console.error("Trending Coins Error:", err);
+
+    } catch (e) {
         container.innerHTML = "<p>Failed to load trending coins.</p>";
+        console.error("Trending coins error:", e);
     }
 }
 
-/* -------------------------
-   MARKET DATA
-------------------------- */
-async function loadMarketData() {
-    const gainersContainer = document.getElementById("topGainers");
-    const losersContainer = document.getElementById("topLosers");
-    const volumeContainer = document.getElementById("topCoins");
-
-    if (!gainersContainer && !losersContainer && !volumeContainer) return;
-
+// -------------------
+// TOP MARKET DATA: Gainers, Losers, Top Traded
+// -------------------
+async function loadTopMarketData() {
     try {
-        const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false");
+        const res = await fetch(
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false"
+        );
         const coins = await res.json();
 
-        const gainers = [...coins].sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h).slice(0, 5);
-        const losers = [...coins].sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h).slice(0, 5);
-        const topVolume = [...coins].sort((a, b) => b.total_volume - a.total_volume).slice(0, 5);
-
+        // Top Gainers
+        const gainers = [...coins]
+            .sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)
+            .slice(0, 5);
         renderCoins(gainers, "topGainers");
-        renderCoins(losers, "topLosers");
-        renderCoins(topVolume, "topCoins");
 
-    } catch (err) {
-        console.error("Market Data Error:", err);
+        // Top Losers
+        const losers = [...coins]
+            .sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h)
+            .slice(0, 5);
+        renderCoins(losers, "topLosers");
+
+        // Top Traded (volume)
+        const topTraded = [...coins]
+            .sort((a, b) => b.total_volume - a.total_volume)
+            .slice(0, 5);
+        renderCoins(topTraded, "topCoins");
+
+    } catch (e) {
+        console.error("Market data error:", e);
     }
 }
 
-/* -------------------------
-   RENDER FUNCTION
-------------------------- */
+// -------------------
+// RENDER COINS
+// -------------------
 function renderCoins(list, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
+    container.innerHTML = ""; 
 
-    container.innerHTML = "";
     list.forEach(coin => {
         container.innerHTML += `
             <div class="coin-card">
-                <img src="${coin.image}" alt="${coin.name} logo">
+                <img src="${coin.image}" alt="${coin.name} Logo">
                 <h4>${coin.name}</h4>
-                <p>$${coin.current_price.toLocaleString()}</p>
-                <p class="${coin.price_change_percentage_24h > 0 ? 'green' : 'red'}">
+                <p>Price: $${formatNumber(coin.current_price)}</p>
+                <p>Market Cap: $${formatNumber(coin.market_cap)}</p>
+                <p class="${coin.price_change_percentage_24h >= 0 ? "green" : "red"}">
                     ${coin.price_change_percentage_24h.toFixed(2)}%
                 </p>
             </div>
         `;
     });
 }
-
-/* -------------------------
-   SCROLL REVEAL
-------------------------- */
-function revealOnScroll() {
-    const reveals = document.querySelectorAll(".reveal");
-    reveals.forEach(el => {
-        const windowHeight = window.innerHeight;
-        const revealTop = el.getBoundingClientRect().top;
-        const revealPoint = 100;
-        if (revealTop < windowHeight - revealPoint) {
-            el.classList.add("active");
-        }
-    });
-}
-window.addEventListener("scroll", revealOnScroll);

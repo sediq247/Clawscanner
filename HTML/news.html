@@ -1,54 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClawScanner | Crypto News</title>
-
-    <link rel="stylesheet" href="/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClawScanner | Crypto News</title>
+<link rel="stylesheet" href="/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-    <!-- Navigation -->
-    <header class="navbar">
-        <div class="logo">
-            <img src="/assets/logo.png.png" alt="ClawScanner Logo">
-            <span>ClawScanner</span>
+<!-- HEADER -->
+<header class="navbar">
+    <div class="logo">
+        <img src="/assets/logo.png.png" alt="ClawScanner Logo" class="logo-img">
+        <span class="logo-text">ClawScanner</span>
+    </div>
+</header>
+
+<!-- LATEST CRYPTO NEWS -->
+<section class="crypto-news">
+    <div class="container">
+        <h2 class="section-title">📰 Latest Crypto News</h2>
+        <div id="newsFeed" class="news-feed">
+            <!-- News articles populated by news.js -->
         </div>
-        <nav>
-        
-                <a href="index.html">Home</a></li>
-                <a href="scan.html">Scan Token</a></li>
-                <a href="cryptonews.html" class="active">Crypto News</a></li>
-                <a href="about.html">About</a></li>
-            
-        </nav>
-    </header>
+    </div>
+</section>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1 class="page-title">Stay Updated with Latest Crypto News</h1>
-        <p class="page-subtitle">
-            ClawScanner brings you live news, updates, and analysis from the crypto world.
-        </p>
-    </section>
-
-    <!-- News Section -->
-    <section class="news-section">
-        <div id="newsContainer" class="news-card">
-            <p>Loading latest crypto news...</p>
+<!-- TRENDING COINS -->
+<section class="markets">
+    <div class="container">
+        <h2 class="section-title">🔥 Trending Coins</h2>
+        <div id="trendingCoins" class="coin-grid">
+            <!-- Trending coins populated by app.js -->
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>© 2026 ClawScanner AI — Crypto Security Scanner</p>
-    </footer>
+<!-- TOP TRADED COINS -->
+<section class="markets">
+    <div class="container">
+        <h2 class="section-title">💰 Top Traded Coins</h2>
+        <div id="topCoins" class="coin-grid">
+            <!-- Top traded coins populated by app.js -->
+        </div>
+    </div>
+</section>
 
-    <script  type="module" src="/js/news.js"></script>
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+    <a href="index.html">Home</a>
+    <a href="scan.html">Scan Token</a>
+    <a href="news.html" class="active">Crypto News</a>
+</nav>
+
+<!-- EXTERNAL JS FILES -->
+<script type="module" src="/js/news.js"></script>
 
 </body>
-
 </html>

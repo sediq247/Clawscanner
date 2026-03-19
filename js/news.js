@@ -1,54 +1,117 @@
-// js/news.js
+// ===============================
+// news.js - ClawScanner Crypto News Page
+// Fully upgraded
+// ===============================
 
 document.addEventListener("DOMContentLoaded", () => {
     loadCryptoNews();
+    loadTrendingCoins();
+    loadTopTradedCoins();
 });
 
-async function loadCryptoNews() {
-    const newsContainer = document.getElementById("newsContainer");
-    if (!newsContainer) return;
+// -------------------
+// HELPER: Format Number
+// -------------------
+function formatNumber(num) {
+    return Number(num).toLocaleString(undefined, { maximumFractionDigits: 2 });
+}
 
-    // Show loading message
-    newsContainer.innerHTML = `<p class="loading">Fetching latest crypto news...</p>`;
+// -------------------
+// LOAD LATEST CRYPTO NEWS
+// -------------------
+async function loadCryptoNews() {
+    const container = document.getElementById("newsContainer");
+    if (!container) return;
+
+    container.innerHTML = "<p>Loading crypto news...</p>";
 
     try {
-        // Fetch latest 10 crypto news
-        const res = await fetch("https://cryptocurrency.cv/api/news?limit=10");
-        const articles = await res.json();
+        // Using CryptoControl Free API
+        const res = await fetch(
+            "https://cryptocontrol.io/api/v1/public/news/coin?coin=bitcoin&language=en",
+            {
+                headers: {
+                    "x-api-key": "YOUR_CRYPTOCONTROL_API_KEY" // Replace with your free key
+                }
+            }
+        );
+        const news = await res.json();
 
-        // Check result
-        if (!Array.isArray(articles) || articles.length === 0) {
-            newsContainer.innerHTML = `<p>No news available at the moment.</p>`;
-            return;
-        }
-
-        // Clear container
-        newsContainer.innerHTML = "";
-
-        // Render articles
-        articles.forEach(article => {
-            const date = new Date(article.published_at).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "short",
-                day: "numeric"
-            });
-
-            newsContainer.innerHTML += `
+        container.innerHTML = "";
+        news.slice(0, 10).forEach(article => {
+            container.innerHTML += `
                 <div class="news-card">
-                    <h3 class="news-title">
-                        <a href="${article.url}" target="_blank" rel="noopener noreferrer">${article.title}</a>
-                    </h3>
-                    <p class="news-meta">Source: ${article.source_name || "Unknown"} | ${date}</p>
-                    <p class="news-summary">${article.summary || ""}</p>
-                    <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="btn-secondary news-btn">
-                        Read Full Article
-                    </a>
+                    <img src="${article.media || 'img/placeholder.png'}" alt="${article.title}">
+                    <h4><a href="${article.url}" target="_blank">${article.title}</a></h4>
+                    <p>${article.sourceDomain} | ${new Date(article.publishedAt).toLocaleDateString()}</p>
                 </div>
             `;
         });
 
-    } catch (error) {
-        console.error("Crypto news error:", error);
-        newsContainer.innerHTML = `<p>Error loading news. Please try again later.</p>`;
+    } catch (e) {
+        console.error("Crypto news error:", e);
+        container.innerHTML = "<p>Failed to load crypto news.</p>";
+    }
+}
+
+// -------------------
+// LOAD TRENDING COINS
+// -------------------
+async function loadTrendingCoins() {
+    const container = document.getElementById("trendingCoins");
+    if (!container) return;
+    container.innerHTML = "<p>Loading trending coins...</p>";
+
+    try {
+        const res = await fetch("https://api.coingecko.com/api/v3/search/trending");
+        const data = await res.json();
+
+        container.innerHTML = "";
+        data.coins.forEach(c => {
+            const coin = c.item;
+            container.innerHTML += `
+                <div class="coin-card">
+                    <img src="${coin.large}" alt="${coin.name} Logo">
+                    <h4>${coin.name}</h4>
+                    <p>${coin.symbol}</p>
+                </div>
+            `;
+        });
+
+    } catch (e) {
+        console.error("Trending coins error:", e);
+        container.innerHTML = "<p>Failed to load trending coins.</p>";
+    }
+}
+
+// -------------------
+// LOAD TOP TRADED COINS
+// -------------------
+async function loadTopTradedCoins() {
+    const container = document.getElementById("topCoins");
+    if (!container) return;
+    container.innerHTML = "<p>Loading top traded coins...</p>";
+
+    try {
+        const res = await fetch(
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=10&page=1&sparkline=false"
+        );
+        const coins = await res.json();
+
+        container.innerHTML = "";
+        coins.forEach(coin => {
+            container.innerHTML += `
+                <div class="coin-card">
+                    <img src="${coin.image}" alt="${coin.name} Logo">
+                    <h4>${coin.name}</h4>
+                    <p>Price: $${formatNumber(coin.current_price)}</p>
+                    <p>24h Volume: $${formatNumber(coin.total_volume)}</p>
+                </div>
+            `;
+        });
+
+    } catch (e) {
+        console.error("Top traded coins error:", e);
+        container.innerHTML = "<p>Failed to load top traded coins.</p>";
     }
 }
