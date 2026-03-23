@@ -1,13 +1,27 @@
-// ===============================
-// app.js - ClawScanner Home Page
-// Fully upgraded with auto-refresh
-// ===============================
-
 document.addEventListener("DOMContentLoaded", () => {
     // Initial load
     loadTrendingCoins();
     loadTopMarketData();
 
+    document.addEventListener("DOMContentLoaded", () => {
+
+        document.querySelectorAll(".tab").forEach(tab => {
+            tab.addEventListener("click", () => {
+    
+                // remove active from all buttons
+                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+    
+                // hide all content
+                document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+    
+                // show selected
+                const target = tab.getAttribute("data-tab");
+                document.getElementById(target).classList.add("active");
+            });
+        });
+    
+    });
     // Auto-refresh every 60 seconds
     setInterval(() => {
         loadTrendingCoins();
@@ -34,7 +48,7 @@ async function loadTrendingCoins() {
         const res = await fetch("https://api.coingecko.com/api/v3/search/trending");
         const data = await res.json();
 
-        container.innerHTML = ""; // Clear old data
+        container.innerHTML = "";
 
         data.coins.forEach(c => {
             const coin = c.item;

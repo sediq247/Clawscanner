@@ -31,7 +31,7 @@ async function loadCryptoNews() {
             "https://cryptocontrol.io/api/v1/public/news/coin?coin=bitcoin&language=en",
             {
                 headers: {
-                    "x-api-key": "YOUR_CRYPTOCONTROL_API_KEY" // Replace with your free key
+            
                 }
             }
         );

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ClawScanner | Crypto Security & Market Scanner</title>
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="../css/style.css">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -31,12 +31,16 @@
     
     <!-- Tabs -->
     <div class="tabs">
-        <button class="tab-btn active" data-tab="trendingCoins">Trending</button>
-        <button class="tab-btn" data-tab="topGainers">Top Gainers</button>
-        <button class="tab-btn" data-tab="topLosers">Top Losers</button>
-        <button class="tab-btn" data-tab="topCoins">Top Traded</button>
+        <span class="tab active">Trending Coins</span>
+        <span class="tab" data-tab="topGainers">Top Gainers</span>
+        <span class="tab" data-tab="topLosers">Top Losers</span>
+        <span class="tab" data-tab="topCoins">Top Traded</span>
     </div>
-
+<div class="market-header">
+    <span>Name</span>
+    <span>Last Price</span>
+    <span>24h chg%</span>
+</div>
     <!-- Tab content -->
     <div class="tab-content">
         <div id="trendingCoins" class="coin-grid active"></div>

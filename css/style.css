@@ -75,23 +75,110 @@ body {
 
 .section-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.6rem;
+    font-size: 2.0rem;
     font-weight: 700;
     margin-bottom: 15px;
     color: #ffcc00;
+    text-align: center;
 }
 
 .scan-section,
 .scan-result,
 .recent-scans,
-.crypto-news,
+.news-card
 .markets {
-    margin: 30px 0;
+margin: 30px 0;
 }
 
-/* ===============================
-   BUTTONS
-================================*/
+/* TABS */
+.tabs {
+    display: none;
+    gap: 50px;
+    padding: 10px 15px;
+    overflow-x: auto;
+    justify-content: space-between;
+  }
+  
+  .tab {
+    color: #aaa;
+    cursor: pointer;
+    font-size: 20px;
+    white-space: nowrap;
+  }
+  
+  .tab.active {
+    color: #f0b90b;
+    border-bottom: 2px solid #f0b90b;
+    padding-bottom: 5px;
+  }
+  
+  /* HEADER ROW (Name / Price / Change) */
+.market-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    font-size: 12px;
+    color: #888;
+    border-bottom: 1px solid #1e2329;
+  }
+  
+  .market-header span {
+    flex: 1;
+  }
+  
+  .market-header span:nth-child(2) {
+    text-align: center;
+  }
+  
+  .market-header span:nth-child(3) {
+    text-align: right;
+  }
+  /* MARKET LIST */
+  .market-list {
+    padding: 10px 15px;
+    min-height: 300px;
+  }
+  
+  /* COIN CARD (WILL BE ADDED VIA JS) */
+  .coin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #1e2329;
+  }
+  
+  .left .name {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .middle {
+    text-align: right;
+  }
+  
+  .middle .price {
+    display: block;
+    font-size: 16px;
+  }
+  
+  .middle small {
+    color: #888;
+  }
+  
+  .right {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  
+  .red {
+    background: #f6465d;
+  }
+  
+  .green {
+    background: #0ecb81;}
+
 
 .btn {
     background-color: #ffcc00;

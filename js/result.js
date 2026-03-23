@@ -1,7 +1,4 @@
-// ===============================
-// result.js - ClawScanner Results Page
-// Fully upgraded
-// ===============================
+
 
 document.addEventListener("DOMContentLoaded", () => {
     displayResult();
