@@ -1,6 +1,5 @@
 // ===============================
-// scanner.js - ClawScanner Token Scanner
-// Fully upgraded
+// scanner.js - ClawScanner 
 // ===============================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -31,35 +30,7 @@ async function startScan() {
 
     try {
         const token = await fetchToken(address);
-        async function fetchToken(address) {
-            const url = `https://api.dexscreener.com/latest/dex/tokens/${address}`;
-            const response = await fetch(url);
-            const data = await response.json();
-        
-            if (!data.pairs || data.pairs.length === 0) {
-                throw new Error("Token not found");
-            }
-        
-            const pair = data.pairs[0];
-        
-            // Simulate some security checks
-            return {
-                name: pair.token.name,
-                symbol: pair.token.symbol,
-                logo: pair.info?.imageUrl || "",
-                price: pair.priceUsd,
-                marketCap: pair.fdv,
-                liquidity: pair.liquidity.usd,
-                volume24h: pair.volume24h,
-                chain: pair.chainId,
-                dex: pair.dexId,
-                isHoneypot: false, // placeholder, replace with actual detection logic
-                ownershipRenounced: true, // placeholder
-                hasMintFunction: false, // placeholder
-                hasBlacklistFunction: false // placeholder
-            };
-        }
-        
+
         const ai = runRiskAnalysis(token);
 
         const result = {
@@ -80,8 +51,42 @@ async function startScan() {
 
     } catch (error) {
         console.error(error);
-        alert("❌ Token not found . Check the contract address.");
+        alert("❌ Token not found or API error. Check the contract address.");
     }
+}
+
+// -------------------
+// FETCH TOKEN DATA
+// -------------------
+async function fetchToken(address) {
+    const url = `https://api.dexscreener.com/latest/dex/tokens/${address}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    console.log("DEX response:", data); // debug
+
+    if (!data.pairs || data.pairs.length === 0) {
+        throw new Error("Token not found");
+    }
+
+    // Pick the first pair that has a valid priceUsd
+    const pair = data.pairs.find(p => p.priceUsd) || data.pairs[0];
+
+    return {
+        name: pair.baseToken?.name || "Unknown",
+        symbol: pair.baseToken?.symbol || "---",
+        logo: pair.info?.imageUrl || "",
+        price: pair.priceUsd || 0,
+        marketCap: pair.fdv || 0,
+        liquidity: pair.liquidity?.usd || 0,
+        volume24h: pair.volume?.h24 || 0,
+        chain: pair.chainId || "Unknown",
+        dex: pair.dexId || "Unknown",
+        isHoneypot: false, // placeholder, replace with actual detection logic
+        ownershipRenounced: true, // placeholder
+        hasMintFunction: false, // placeholder
+        hasBlacklistFunction: false // placeholder
+    };
 }
 
 // -------------------
@@ -94,7 +99,7 @@ function runRiskAnalysis(token) {
     // Liquidity Check
     if (token.liquidity > 1000000) {
         score += 20;
-        checks.push("Strong Liquidity");
+        checks.push("Strong Liquidity ✅");
     } else if (token.liquidity > 100000) {
         score += 10;
         checks.push("Moderate Liquidity ⚖️");
@@ -118,25 +123,25 @@ function runRiskAnalysis(token) {
     // Volume Check
     if (token.volume24h > 1000000) {
         score += 15;
-        checks.push("Strong Trading Activity");
+        checks.push("Strong Trading Activity ✅");
     } else if (token.volume24h > 100000) {
         score += 5;
-        checks.push("Moderate Trading Activity");
+        checks.push("Moderate Trading Activity ⚖️");
     } else {
         score -= 15;
-        checks.push("Low Trading Volume");
+        checks.push("Low Trading Volume ⚠️");
     }
 
     // Honeypot / Sell Test
     if (token.isHoneypot) {
         score -= 30;
-        checks.push("Honeypot Detected");
+        checks.push("Honeypot Detected 🚨");
     }
 
     // Ownership / Rugpull Risk
     if (!token.ownershipRenounced) {
         score -= 20;
-        checks.push("Owner Control Exists  (Possible Rugpull)");
+        checks.push("Owner Control Exists ⚠️ (Possible Rugpull)");
     }
 
     // Mint / Blacklist Functions
@@ -158,7 +163,7 @@ function runRiskAnalysis(token) {
     let advice = "";
     if (score >= 80) {
         rating = "Low Risk ✅";
-        advice = "Token appears safe. Trade normally but DYOR.";
+        advice = "Token appears safe. Trade normally.";
     } else if (score >= 50) {
         rating = "Medium Risk ⚖️";
         advice = "Token shows some risk. Proceed carefully.";

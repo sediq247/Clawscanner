@@ -1,4 +1,7 @@
-
+// ===============================
+// result.js - ClawScanner Results Page
+// Compatible with your current result.html
+// ===============================
 
 document.addEventListener("DOMContentLoaded", () => {
     displayResult();
@@ -9,46 +12,43 @@ document.addEventListener("DOMContentLoaded", () => {
 // DISPLAY TOKEN SCAN RESULT
 // -------------------
 function displayResult() {
-    const resultContainer = document.getElementById("scanResult");
-    if (!resultContainer) return;
-
     const result = JSON.parse(localStorage.getItem("clawscan_result"));
-    if (!result) {
-        resultContainer.innerHTML = "<p>No scan data found. Please scan a token first.</p>";
-        return;
-    }
+    if (!result) return;
 
-    resultContainer.innerHTML = `
-        <div class="token-summary">
-            <img src="${result.logo}" alt="${result.name} Logo" class="token-logo">
-            <div class="token-info">
-                <h3>${result.name} (${result.symbol})</h3>
-                <p>Price: $${formatNumber(result.price)}</p>
-                <p>Market Cap: $${formatNumber(result.marketCap)}</p>
-                <p>Liquidity: $${formatNumber(result.liquidity)}</p>
-                <p>24h Volume: $${formatNumber(result.volume24h)}</p>
-            </div>
-        </div>
+    // Token Summary
+    document.getElementById("tokenLogo").src = result.logo || "/images/default-token.png";
+    document.getElementById("tokenLogo").alt = result.name ? `${result.name} Logo` : "Token Logo";
+    document.getElementById("tokenName").textContent = result.name || "Unknown";
+    document.getElementById("tokenSymbol").textContent = result.symbol || "---";
+    document.getElementById("tokenChain").textContent = result.chain || "---";
+    document.getElementById("tokenDEX").textContent = result.dex || "---";
 
-        <div class="vulnerabilities">
-            <h4 class="section-title">Vulnerabilities & Risk Analysis</h4>
-            <ul>
-                ${result.checks.map(check => `<li>${check}</li>`).join("")}
-            </ul>
+    // Market Metrics
+    document.getElementById("tokenPrice").textContent = formatNumber(result.price);
+    document.getElementById("tokenLiquidity").textContent = formatNumber(result.liquidity);
+    document.getElementById("tokenMarketCap").textContent = formatNumber(result.marketCap);
+    document.getElementById("tokenVolume").textContent = formatNumber(result.volume24h);
 
-            <div class="risk-analysis">
-                <p><strong>Score:</strong> ${result.score}</p>
-                <p><strong>Rating:</strong> ${result.safety}</p>
-                <p><strong>Advice:</strong> ${result.advice}</p>
-            </div>
-        </div>
-    `;
+    // Vulnerabilities / Checks
+    const checksContainer = document.getElementById("tokenChecks");
+    checksContainer.innerHTML = "";
+    (result.checks || []).forEach(check => {
+        const li = document.createElement("li");
+        li.textContent = check;
+        checksContainer.appendChild(li);
+    });
+
+    // Risk Analysis
+    document.getElementById("riskScore").textContent = result.score || 0;
+    document.getElementById("riskRating").textContent = result.safety || "Unknown";
+    document.getElementById("riskAdvice").textContent = result.advice || "N/A";
 }
 
 // -------------------
 // HELPER: Format Number
 // -------------------
 function formatNumber(num) {
+    if (num === undefined || num === null) return "--";
     return Number(num).toLocaleString(undefined, { maximumFractionDigits: 2 });
 }
 
@@ -56,20 +56,26 @@ function formatNumber(num) {
 // DISPLAY RECENT SCANS
 // -------------------
 function displayRecentScans() {
-    const container = document.getElementById("recentScans");
+    const container = document.getElementById("scanHistory");
     if (!container) return;
 
     const history = JSON.parse(localStorage.getItem("clawscan_history")) || [];
     container.innerHTML = "";
 
     history.forEach(scan => {
-        container.innerHTML += `
-            <div class="history-item">
-                <span>${scan.name} (${scan.symbol})</span>
-                <span class="${scan.score >= 80 ? "green" : scan.score >= 50 ? "yellow" : "red"}">
-                    ${scan.score} pts
-                </span>
-            </div>
-        `;
+        const div = document.createElement("div");
+        div.className = "history-item";
+
+        const spanName = document.createElement("span");
+        spanName.textContent = `${scan.name || 'Unknown'} (${scan.symbol || '---'})`;
+
+        const spanScore = document.createElement("span");
+        spanScore.textContent = `${scan.score || 0} pts`;
+        spanScore.className = scan.score >= 80 ? "green" : scan.score >= 50 ? "yellow" : "red";
+
+        div.appendChild(spanName);
+        div.appendChild(spanScore);
+
+        container.appendChild(div);
     });
 }

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ClawScanner | Crypto Tokens Scanner</title>
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="../css/style.css">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -31,7 +31,7 @@
     
     <!-- Tabs -->
     <div class="tabs">
-        <span class="tab active">Trending Coins</span>
+        <span class="tab active" data-tab="">Trending Coins</span>
         <span class="tab" data-tab="topGainers">Top Gainers</span>
         <span class="tab" data-tab="topLosers">Top Losers</span>
         <span class="tab" data-tab="topCoins">Top Traded</span>
@@ -40,15 +40,39 @@
     <span>Name</span>
     <span>Last Price</span>
     <span>24h chg%</span>
+
+
 </div>
-    <!-- Tab content -->
-    <div class="tab-content">
-        <div id="trendingCoins" class="coin-grid active"></div>
-        <div id="topGainers" class="coin-grid"></div>
-        <div id="topLosers" class="coin-grid"></div>
-        <div id="topCoins" class="coin-grid"></div>
+    <!-- Tab Panes -->
+
+        <!-- Trending Coins -->
+        <div id="trendingCoins" class="tab-pane active">
+            <!-- Example row placeholder -->
+            <div class="coin-row">
+                <div class="col name">
+                    <img src="" class="coin-logo">
+                    <div>
+                        <div class="symbol">---</div>
+                        <div class="fullname">Loading...</div>
+                    </div>
+                </div>
+                <div class="col price">
+                    <div class="main-price">--</div>
+                    <div class="sub-price">--</div>
+                </div>
+                <div class="col change">--</div>
+            </div>
+        </div>
+
+        <!-- Top Gainers -->
+        <div id="topGainers" class="tab-pane"></div>
+
+        <!-- Top Losers -->
+        <div id="topLosers" class="tab-pane"></div>
+
+        <!-- Top Traded -->
+        <div id="topCoins" class="tab-pane"></div>
     </div>
-</section>
 
 <!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">

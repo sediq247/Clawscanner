@@ -90,28 +90,27 @@ body {
 margin: 30px 0;
 }
 
-/* TABS */
 .tabs {
-    display: none;
-    gap: 50px;
+    display: flex;
+    gap: 15px;
+    border-bottom: 2px solid #2a2a35;
+    margin-bottom: 20px;
+}
+
+.tab {
     padding: 10px 15px;
-    overflow-x: auto;
-    justify-content: space-between;
-  }
-  
-  .tab {
-    color: #aaa;
     cursor: pointer;
-    font-size: 20px;
-    white-space: nowrap;
-  }
-  
-  .tab.active {
-    color: #f0b90b;
-    border-bottom: 2px solid #f0b90b;
-    padding-bottom: 5px;
-  }
-  
+    color: #aaa;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+.tab.active {
+    color: #fff;
+    border-bottom-color: #f0b90b;
+}
+ 
   /* HEADER ROW (Name / Price / Change) */
 .market-header {
     display: flex;

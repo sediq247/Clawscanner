@@ -1,39 +1,49 @@
+// ===============================
+// app.js - ClawScanner Home Page
+// ===============================
+
 document.addEventListener("DOMContentLoaded", () => {
-    // Initial load
-    loadTrendingCoins();
-    loadTopMarketData();
-
-    document.addEventListener("DOMContentLoaded", () => {
-
-        document.querySelectorAll(".tab").forEach(tab => {
-            tab.addEventListener("click", () => {
-    
-                // remove active from all buttons
-                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-                tab.classList.add("active");
-    
-                // hide all content
-                document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-    
-                // show selected
-                const target = tab.getAttribute("data-tab");
-                document.getElementById(target).classList.add("active");
-            });
-        });
-    
-    });
-    // Auto-refresh every 60 seconds
-    setInterval(() => {
-        loadTrendingCoins();
-        loadTopMarketData();
-    }, 60000); // 60000ms = 1 minute
+    setupTabs();
+    loadAllMarketData();
 });
 
 // -------------------
-// HELPER: Format Number
+// Helper: Format Number
 // -------------------
 function formatNumber(num) {
     return Number(num).toLocaleString(undefined, { maximumFractionDigits: 2 });
+}
+
+// -------------------
+// Setup Tabs Switching
+// -------------------
+function setupTabs() {
+    const tabs = document.querySelectorAll(".tabs");
+    const panes = document.querySelectorAll(".tab-pane");
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+
+            // Hide all panes
+            panes.forEach(p => p.classList.remove("active"));
+
+            // Show target pane
+            const target = tab.getAttribute("data-tab");
+            const pane = document.getElementById(target);
+            if (pane) pane.classList.add("active");
+        });
+    });
+}
+
+// -------------------
+// Load All Market Data
+// -------------------
+async function loadAllMarketData() {
+    await loadTrendingCoins();
+    await loadTopMarketData();
 }
 
 // -------------------
@@ -41,7 +51,6 @@ function formatNumber(num) {
 // -------------------
 async function loadTrendingCoins() {
     const container = document.getElementById("trendingCoins");
-    if (!container) return;
     container.innerHTML = "<p>Loading trending coins...</p>";
 
     try {
@@ -52,13 +61,31 @@ async function loadTrendingCoins() {
 
         data.coins.forEach(c => {
             const coin = c.item;
+
             container.innerHTML += `
-                <div class="coin-card">
-                    <img src="${coin.large}" alt="${coin.name} Logo">
-                    <h4>${coin.name}</h4>
-                    <p>${coin.symbol}</p>
-                    <p>Rank #${coin.market_cap_rank}</p>
+            <div class="coin-row">
+
+                <!-- NAME -->
+                <div class="col name">
+                    <img src="${coin.large}" class="coin-logo">
+                    <div>
+                        <div class="symbol">${coin.symbol.toUpperCase()}</div>
+                        <div class="fullname">${coin.name}</div>
+                    </div>
                 </div>
+
+                <!-- PRICE -->
+                <div class="col price">
+                    <div class="main-price">--</div>
+                    <div class="sub-price">Rank #${coin.market_cap_rank || '-'}</div>
+                </div>
+
+                <!-- CHANGE -->
+                <div class="col change green">
+                    🔥 Trending
+                </div>
+
+            </div>
             `;
         });
 
@@ -69,7 +96,7 @@ async function loadTrendingCoins() {
 }
 
 // -------------------
-// TOP MARKET DATA: Gainers, Losers, Top Traded
+// TOP MARKET DATA (Gainers, Losers, Top Traded)
 // -------------------
 async function loadTopMarketData() {
     try {
@@ -81,19 +108,19 @@ async function loadTopMarketData() {
         // Top Gainers
         const gainers = [...coins]
             .sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)
-            .slice(0, 5);
+            .slice(0, 10);
         renderCoins(gainers, "topGainers");
 
         // Top Losers
         const losers = [...coins]
             .sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h)
-            .slice(0, 5);
+            .slice(0, 10);
         renderCoins(losers, "topLosers");
 
         // Top Traded (volume)
         const topTraded = [...coins]
             .sort((a, b) => b.total_volume - a.total_volume)
-            .slice(0, 5);
+            .slice(0, 10);
         renderCoins(topTraded, "topCoins");
 
     } catch (e) {
@@ -102,23 +129,40 @@ async function loadTopMarketData() {
 }
 
 // -------------------
-// RENDER COINS
+//   RENDER COINS 
 // -------------------
 function renderCoins(list, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    container.innerHTML = ""; 
+
+    container.innerHTML = "";
 
     list.forEach(coin => {
+        const isGreen = coin.price_change_percentage_24h >= 0;
+
         container.innerHTML += `
-            <div class="coin-card">
-                <img src="${coin.image}" alt="${coin.name} Logo">
-                <h4>${coin.name}</h4>
-                <p>Price: $${formatNumber(coin.current_price)}</p>
-                <p>Market Cap: $${formatNumber(coin.market_cap)}</p>
-                <p class="${coin.price_change_percentage_24h >= 0 ? "green" : "red"}">
+            <div class="coin-row">
+
+                <!-- NAME -->
+                <div class="col name">
+                    <img src="${coin.image}" class="coin-logo">
+                    <div>
+                        <div class="symbol">${coin.symbol.toUpperCase()}</div>
+                        <div class="fullname">${coin.name}</div>
+                    </div>
+                </div>
+
+                <!-- PRICE -->
+                <div class="col price">
+                    <div class="main-price">$${formatNumber(coin.current_price)}</div>
+                    <div class="sub-price">$${formatNumber(coin.market_cap)}</div>
+                </div>
+
+                <!-- CHANGE -->
+                <div class="col change ${isGreen ? "green" : "red"}">
                     ${coin.price_change_percentage_24h.toFixed(2)}%
-                </p>
+                </div>
+
             </div>
         `;
     });
