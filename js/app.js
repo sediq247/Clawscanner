@@ -7,30 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
     loadAllMarketData();
 });
 
-// -------------------
-// Helper: Format Number
-// -------------------
 function formatNumber(num) {
     return Number(num).toLocaleString(undefined, { maximumFractionDigits: 2 });
 }
 
-// -------------------
-// Setup Tabs Switching
-// -------------------
 function setupTabs() {
     const tabs = document.querySelectorAll(".tabs");
     const panes = document.querySelectorAll(".tab-pane");
 
     tabs.forEach(tab => {
         tab.addEventListener("click", () => {
-            // Remove active class from all tabs
             tabs.forEach(t => t.classList.remove("active"));
             tab.classList.add("active");
 
-            // Hide all panes
             panes.forEach(p => p.classList.remove("active"));
-
-            // Show target pane
             const target = tab.getAttribute("data-tab");
             const pane = document.getElementById(target);
             if (pane) pane.classList.add("active");
@@ -38,17 +28,13 @@ function setupTabs() {
     });
 }
 
-// -------------------
-// Load All Market Data
-// -------------------
+
 async function loadAllMarketData() {
     await loadTrendingCoins();
     await loadTopMarketData();
 }
 
-// -------------------
-// TRENDING COINS
-// -------------------
+
 async function loadTrendingCoins() {
     const container = document.getElementById("trendingCoins");
     container.innerHTML = "<p>Loading trending coins...</p>";
@@ -67,22 +53,17 @@ async function loadTrendingCoins() {
 
                 <!-- NAME -->
                 <div class="col name">
-                    <img src="${coin.large}" class="coin-logo">
-                    <div>
+               <div>
                         <div class="symbol">${coin.symbol.toUpperCase()}</div>
-                        <div class="fullname">${coin.name}</div>
                     </div>
                 </div>
 
                 <!-- PRICE -->
                 <div class="col price">
                     <div class="main-price">--</div>
-                    <div class="sub-price">Rank #${coin.market_cap_rank || '-'}</div>
                 </div>
-
-                <!-- CHANGE -->
                 <div class="col change green">
-                    🔥 Trending
+                     Trending
                 </div>
 
             </div>
@@ -95,9 +76,7 @@ async function loadTrendingCoins() {
     }
 }
 
-// -------------------
-// TOP MARKET DATA (Gainers, Losers, Top Traded)
-// -------------------
+
 async function loadTopMarketData() {
     try {
         const res = await fetch(
@@ -143,22 +122,17 @@ function renderCoins(list, containerId) {
         container.innerHTML += `
             <div class="coin-row">
 
-                <!-- NAME -->
                 <div class="col name">
-                    <img src="${coin.image}" class="coin-logo">
                     <div>
                         <div class="symbol">${coin.symbol.toUpperCase()}</div>
-                        <div class="fullname">${coin.name}</div>
                     </div>
                 </div>
 
                 <!-- PRICE -->
                 <div class="col price">
                     <div class="main-price">$${formatNumber(coin.current_price)}</div>
-                    <div class="sub-price">$${formatNumber(coin.market_cap)}</div>
                 </div>
 
-                <!-- CHANGE -->
                 <div class="col change ${isGreen ? "green" : "red"}">
                     ${coin.price_change_percentage_24h.toFixed(2)}%
                 </div>

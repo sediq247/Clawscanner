@@ -71,7 +71,6 @@ async function loadTrendingCoins() {
             const coin = c.item;
             container.innerHTML += `
                 <div class="coin-card">
-                    <img src="${coin.large}" alt="${coin.name} Logo">
                     <h4>${coin.name}</h4>
                     <p>${coin.symbol}</p>
                 </div>
